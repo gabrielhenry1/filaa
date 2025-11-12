@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filas - Encadeada e Circular</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Simulação de Filas: Encadeada e Circular</h1>
+    <div class="tabs">
+        <button class="tab active" onclick="mostrarFila('encadeada')">Fila Encadeada</button>
+        <button class="tab" onclick="mostrarFila('circular')">Fila Circular</button>
+    </div>
+
+    <div id="encadeada" class="conteudo ativo">
+        <h2>Fila Encadeada</h2>
+        <p>Na <b>fila encadeada</b>, cada elemento aponta para o próximo, formando uma lista dinâmica (sem tamanho fixo).</p>
+
+        <div class="fila" id="filaEncadeada"></div>
+
+        <div class="botoes">
+            <input type="text" id="valorEncadeada" placeholder="Valor">
+            <button onclick="enfileirarEncadeada()">Enfileirar</button>
+            <button onclick="desenfileirarEncadeada()">Desenfileirar</button>
+        </div>
+
+        <h3>Exemplo de Código (C)</h3>
+<pre><code>
+typedef struct No {
+    int valor;
+    struct No* prox;
+} No;
+
+typedef struct {
+    No* inicio;
+    No* fim;
+} Fila;
+
+void enfileirar(Fila* f, int v) {
+    No* novo = malloc(sizeof(No));
+    novo->valor = v;
+    novo->prox = NULL;
+    if (f->fim) f->fim->prox = novo;
+    else f->inicio = novo;
+    f->fim = novo;
+}
+</code></pre>
+        <p><b>Explicação:</b> Cada nó aponta para o próximo, e a fila cresce dinamicamente sem limite fixo.</p>
+    </div>
+
+    <div id="circular" class="conteudo">
+        <h2>Fila Circular</h2>
+        <p>Na <b>fila circular</b>, o último elemento aponta para o primeiro, e o espaço é reaproveitado quando há remoções.</p>
+
+        <div class="fila" id="filaCircular"></div>
+
+        <div class="botoes">
+            <input type="text" id="valorCircular" placeholder="Valor">
+            <button onclick="enfileirarCircular()">Enfileirar</button>
+            <button onclick="desenfileirarCircular()">Desenfileirar</button>
+        </div>
+
+        <h3>Exemplo de Código (C)</h3>
+<pre><code>
+#define TAM 5
+int fila[TAM];
+int inicio = 0, fim = 0, qtd = 0;
+
+void enfileirar(int v) {
+    if (qtd < TAM) {
+        fila[fim] = v;
+        fim = (fim + 1) % TAM;
+        qtd++;
+    }
+}
+</code></pre>
+        <p><b>Explicação:</b> Quando o fim chega ao final do vetor, ele volta para o início, formando um círculo.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
